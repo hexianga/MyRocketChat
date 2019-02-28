@@ -467,6 +467,25 @@ Template.messageBox.events({
 				{
 					groups: Object.keys(groups).map((group) => {
 						const items = [];
+
+						// 源码改动
+						if (group === 'Create_new') {
+							groups[group].push({
+								action() { console.log('-------action'); },
+								condition() { console.log('-------condition'); },
+								icon: 'doc',
+								id: 'file-message',
+								label: '文档',
+							}, {
+								action() { console.log('-------action'); },
+								condition() { console.log('-------condition'); },
+								icon: 'note',
+								id: 'note-message',
+								label: '笔记',
+							});
+						}
+
+
 						groups[group].forEach((item) => {
 							items.push({
 								icon: item.icon,

@@ -59,22 +59,40 @@
 			<span class="toggle-hidden icon-right-dir" data-message="{{_id}}"> {{_ "Message_Ignored"}} </span>
 		{{/if}}
 		<div class="body color-primary-font-color {{system true}}" dir="auto" data-unread-text="{{_ "Unread_Messages"}}">
-			{{#if isSnippet}}
+			<!-- {{#if isSnippet}}
 				<div class="snippet-name">{{_ "Snippet_name"}}: {{snippetName}}</div>
 			{{/if}}
 			{{#if isDecrypting}}
 				<span>******</span>
-			{{else}}
-				{{{body}}}
-			{{/if}}
-			{{#if hasOembed}}
+			{{else}} -->
+				{{#if isSendFileType}}
+					{{#each fileData}}
+						<div class="file-box">
+							{{#if isDocFile}}
+								<img width="32" height="32" class="doc-file" src="images/card-doc.png"/>
+							{{else}}
+								<img width="32" height="32" class="doc-file" src="images/card-note.png"/>
+							{{/if}}
+							<div class="file-info-wrapper">
+								<a class="link-to-editor" href="http://web.duoshengbu.com/editor/document?file_id={{id}}" target="_blank"></a>
+								<span class="doc-title">{{title}}</span>
+								<span class="file-owner">所有者：moonyaan</span>
+							</div>
+						</div>
+					{{/each}}
+				{{else}}
+					{{{body}}}
+				{{/if}}
+
+			<!-- {{/if}} -->
+			<!-- {{#if hasOembed}}
 				{{#each urls}}
 					{{injectIndex . @index}} {{> oembedBaseWidget}}
 				{{/each}}
 			{{/if}}
 			{{#each attachments}}
 				{{injectIndex . @index}} {{> messageAttachment}}
-			{{/each}}
+			{{/each}} -->
 		</div>
 		{{#with readReceipt}}
 		<div class="read-receipt {{readByEveryone}}">

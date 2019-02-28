@@ -64,6 +64,31 @@ async function renderPdfToCanvas(canvasId, pdfLink) {
 }
 
 Template.message.helpers({
+	getMyOwnString(string) {
+		if (string.includes('SendFile')) {
+			const isDocFile = string.includes('sendDoc');
+			let titleArr = string.match(/\s{1}(.[^<br>])*/g);
+			titleArr = titleArr.map((value) => value.trim());
+			let idArr = string.match(/\w{16}\s{1}/g);
+			idArr = idArr.map((value) => value.trim());
+
+			let finalString = '';
+			titleArr.forEach((title, index) => {
+				finalString += `<div class="file-box" onclick="fn()">
+				<img width="32" height="32" class="doc-file" src="${ isDocFile ? 'images/card-doc.jpg' : 'images/card-note.jpg' }"/>
+				<div class="file-info-wrapper">
+					<a class="link-to-editor" href="http://web.duoshengbu.com/editor/document?file_id=${ idArr[index] }" target="_blank">${ title }</a>
+					<span class="file-owner">所有者：moonyaan</span>
+				</div>
+
+				</div>`;
+			});
+			return finalString;
+
+		} else {
+			return string;
+		}
+	},
 	encodeURI(text) {
 		return encodeURI(text);
 	},
@@ -172,6 +197,15 @@ Template.message.helpers({
 	},
 	body() {
 		return Template.instance().body;
+	},
+	isSendFileType() {
+		return Template.instance().isSendFileType;
+	},
+	isDocFile() {
+		return Template.instance().isDocFile;
+	},
+	fileData() {
+		return Template.instance().fileData;
 	},
 	system(returnClass) {
 		if (RocketChat.MessageTypes.isSystemMessage(this)) {
@@ -379,6 +413,11 @@ Template.message.helpers({
 	},
 });
 
+Template.message.events({
+	'click .message'(event, instance) {
+		console.log(event, instance);
+	},
+});
 
 Template.message.onCreated(function() {
 	let msg = Template.currentData();
@@ -392,6 +431,10 @@ Template.message.onCreated(function() {
 			broadcast: 1,
 		},
 	});
+
+	this.isSendFileType = false;
+	this.isDocFile = false;
+	this.fileData = [];
 
 	return this.body = (() => {
 		const isSystemMessage = RocketChat.MessageTypes.isSystemMessage(msg);
@@ -411,12 +454,51 @@ Template.message.onCreated(function() {
 			msg = RocketChat.callbacks.run('renderMentions', msg);
 			msg = msg.html;
 		} else {
+			this.isSendFileType = msg.msg.includes('SendFile');
+			this.isSendFileType = msg.msg.includes('sendDoc') || msg.msg.includes('sendNote');
+			this.isDocFile = msg.msg.includes('sendDoc');
+			this.fileData = [];
+			if (this.isSendFileType) {
+				// 处理笔记
+				if (this.isDocFile) {
+					const docArr = msg.msg.split('\n').slice(2);
+					docArr.forEach((value) => {
+						this.fileData.push({
+							id: value.slice(0, 16),
+							title: value.slice(17),
+						});
+					});
+				} else {
+					const noteArr = msg.msg.split('\n').slice(2);
+					noteArr.forEach((value) => {
+						this.fileData.push({
+							id: value.slice(0, 9),
+							title: value.slice(10),
+						});
+					});
+				}
+				
+				// let titleArr = msg.match(/\s{1}(.[^<br>])*/g);
+				// console.log(titleArr)
+				// titleArr = titleArr.map((value) => value.trim());
+				// let idArr = msg.match(/\w{16}\s{1}/g);
+				// console.log(idArr)
+				// idArr = idArr.map((value) => value.trim());
+				// idArr.forEach((value, index) => {
+				// 	this.fileData.push({
+				// 		id: value,
+				// 		title: titleArr[index],
+				// 	});
+				// });
+				console.log(this.fileData);
+			}
 			msg = renderMessageBody(msg);
 		}
 
 		if (isSystemMessage) {
 			msg.html = RocketChat.Markdown.parse(msg.html);
 		}
+
 		return msg;
 	})();
 });

@@ -300,23 +300,7 @@
 	}
 }
 
-.rc-popover--message-box {
-	& .rc-popover__divider {
-		display: none;
-	}
 
-	& .rc-popover__title {
-		text-transform: none;
-
-		color: var(--message-box-popover-title-text-color);
-
-		font-size: var(--message-box-popover-title-text-size);
-
-		&:not(:first-child) {
-			margin-top: var(--popover-column-padding);
-		}
-	}
-}
 
 .rtl .rc-message-box__typing {
 	right: 0;
