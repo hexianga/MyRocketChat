@@ -64,31 +64,31 @@ async function renderPdfToCanvas(canvasId, pdfLink) {
 }
 
 Template.message.helpers({
-	getMyOwnString(string) {
-		if (string.includes('SendFile')) {
-			const isDocFile = string.includes('sendDoc');
-			let titleArr = string.match(/\s{1}(.[^<br>])*/g);
-			titleArr = titleArr.map((value) => value.trim());
-			let idArr = string.match(/\w{16}\s{1}/g);
-			idArr = idArr.map((value) => value.trim());
+	// getMyOwnString(string) {
+	// 	if (string.includes('SendFile')) {
+	// 		const isDocFile = string.includes('sendDoc');
+	// 		let titleArr = string.match(/\s{1}(.[^<br>])*/g);
+	// 		titleArr = titleArr.map((value) => value.trim());
+	// 		let idArr = string.match(/\w{16}\s{1}/g);
+	// 		idArr = idArr.map((value) => value.trim());
 
-			let finalString = '';
-			titleArr.forEach((title, index) => {
-				finalString += `<div class="file-box" onclick="fn()">
-				<img width="32" height="32" class="doc-file" src="${ isDocFile ? 'images/card-doc.jpg' : 'images/card-note.jpg' }"/>
-				<div class="file-info-wrapper">
-					<a class="link-to-editor" href="http://web.duoshengbu.com/editor/document?file_id=${ idArr[index] }" target="_blank">${ title }</a>
-					<span class="file-owner">所有者：moonyaan</span>
-				</div>
+	// 		let finalString = '';
+	// 		titleArr.forEach((title, index) => {
+	// 			finalString += `<div class="file-box" onclick="fn()">
+	// 			<img width="32" height="32" class="doc-file" src="${ isDocFile ? 'images/card-doc.jpg' : 'images/card-note.jpg' }"/>
+	// 			<div class="file-info-wrapper">
+	// 				<a class="link-to-editor" href="http://web.duoshengbu.com/editor/document?file_id=${ idArr[index] }" target="_blank">${ title }</a>
+	// 				<span class="file-owner">所有者：moonyaan</span>
+	// 			</div>
 
-				</div>`;
-			});
-			return finalString;
+	// 			</div>`;
+	// 		});
+	// 		return finalString;
 
-		} else {
-			return string;
-		}
-	},
+	// 	} else {
+	// 		return string;
+	// 	}
+	// },
 	encodeURI(text) {
 		return encodeURI(text);
 	},
