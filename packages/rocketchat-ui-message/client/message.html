@@ -67,18 +67,19 @@
 			{{else}}
 				{{#if isSendFileType}}
 					{{#each fileData}}
-						<div class="file-box">
-							{{#if isDocFile}}
-								<img width="32" height="32" class="doc-file" src="https://i.loli.net/2019/03/01/5c7902c5a562e.png"/>
-							{{else}}
-								<img width="32" height="32" class="doc-file" src="https://i.loli.net/2019/03/01/5c7902d9ccebc.png"/>
-							{{/if}}
-							<div class="file-info-wrapper">
-								<a class="link-to-editor" href="https://web.sg.work/editor/document?file_id={{id}}" target="_blank"></a>
-								<span class="doc-title">{{title}}</span>
-								<span class="file-owner">所有者：moonyaan</span>
+						<a class="" href="https://web.sg.work/editor/document?file_id={{id}}" target="_blank">
+							<div class="file-box">
+								{{#if isDocFile}}
+									<img width="32" height="32" class="doc-file" src="https://i.loli.net/2019/03/01/5c7902c5a562e.png"/>
+								{{else}}
+									<img width="32" height="32" class="doc-file" src="https://i.loli.net/2019/03/01/5c7902d9ccebc.png"/>
+								{{/if}}
+								<div class="file-info-wrapper">
+									<span class="doc-title">{{title}}</span>
+									<span class="file-owner">所有者：moonyaan</span>
+								</div>
 							</div>
-						</div>
+						</a>
 					{{/each}}
 				{{else}}
 					{{{body}}}
